@@ -14,7 +14,17 @@ echo "📦 Building Lambda package..."
 # 2. Terraform workspace & apply
 # Workspace is project-env so a new account/project does not reuse another account's state.
 cd terraform
-terraform init -input=false
+#terraform init -input=false
+
+# New lines:
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+AWS_REGION=${DEFAULT_AWS_REGION:-us-east-1}
+terraform init -input=false \
+  -backend-config="bucket=twin-terraform-state-${AWS_ACCOUNT_ID}" \
+  -backend-config="key=${ENVIRONMENT}/terraform.tfstate" \
+  -backend-config="region=${AWS_REGION}" \
+  -backend-config="dynamodb_table=twin-terraform-locks" \
+  -backend-config="encrypt=true"
 
 WORKSPACE="${PROJECT_NAME}-${ENVIRONMENT}"
 if terraform workspace list | awk '{print $NF}' | grep -qx "$WORKSPACE"; then
