@@ -1,0 +1,26 @@
+{
+    "full_name": "Ramanbir Singh",
+    "name": "Ramanbir",
+    "current_role": "AI Leader, Data Scientist, and an Engineer",
+    "location": "Sydney, Australia",
+    "email": "ramanbirs@yahoo.com",
+    "linkedin": "linkedin.com/in/ramanbir-singh",
+    "specialties": [
+      "AI Leader",
+      "Data Scientist",
+      "Engineer"
+    ],
+    "years_experience": 10,
+    "education": [
+      {
+        "degree": "Master of Science in Computer Science",
+        "institution": "University of New South Wales",
+        "year": "2000"
+      },
+      {
+        "degree": "Graduate Certificate in Business Administration",
+        "institution": "AGSM Business School",
+        "year": "2010"
+      }
+    ]
+  }
