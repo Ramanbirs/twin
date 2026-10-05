@@ -31,16 +31,18 @@ terraform init -input=false \
   -backend-config="dynamodb_table=twin-terraform-locks" \
   -backend-config="encrypt=true"
 
-# Check if workspace exists
-if ! terraform workspace list | grep -q "$ENVIRONMENT"; then
-    echo "❌ Error: Workspace '$ENVIRONMENT' does not exist"
+WORKSPACE="${PROJECT_NAME}-${ENVIRONMENT}"
+
+# Exact workspace name (do not substring-match "dev" inside "twin-dev")
+if ! terraform workspace list | awk '{print $NF}' | grep -qx "$WORKSPACE"; then
+    echo "❌ Error: Workspace '$WORKSPACE' does not exist"
     echo "Available workspaces:"
     terraform workspace list
     exit 1
 fi
 
 # Select the workspace
-terraform workspace select "$ENVIRONMENT"
+terraform workspace select "$WORKSPACE"
 
 echo "📦 Emptying S3 buckets..."
 
@@ -83,4 +85,4 @@ echo "✅ Infrastructure for ${ENVIRONMENT} has been destroyed!"
 echo ""
 echo "💡 To remove the workspace completely, run:"
 echo "   terraform workspace select default"
-echo "   terraform workspace delete $ENVIRONMENT"
+echo "   terraform workspace delete $WORKSPACE"
